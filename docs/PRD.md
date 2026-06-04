@@ -1,4 +1,4 @@
-# MagicSquare_1004 — PRD (Product Requirements Document)
+# MagicSquare_xx — PRD (Product Requirements Document)
 
 **버전:** 0.1 (초안)  
 **작성일:** 2026-06-04  
@@ -95,7 +95,7 @@
 
 ### 5.2 Command
 
-**FR-C1.** CLI entry: `verify` (또는 `python -m magic1004 verify`)  
+**FR-C1.** CLI entry: `verify` (또는 `python -m magicxx verify`)  
 **FR-C2.** 입력 형식: 파일 경로 또는 stdin (4×4, 공백/쉼표 구분)  
 **FR-C3.** 출력:
 - `OK` — 10개 조건 모두 pass (빈칸 없는 완성판 기준)

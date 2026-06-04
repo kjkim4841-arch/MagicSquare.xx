@@ -1,7 +1,7 @@
 [project]
-name = "magic-square-1004"
+name = "magic-square-xx"
 version = "0.0.0"
-description = "MagicSquare_1004 — ECB + Dual-Track TDD harness"
+description = "MagicSquare_xx — ECB + Dual-Track TDD harness"
 requires-python = ">=3.10"
 
 [project.optional-dependencies]
