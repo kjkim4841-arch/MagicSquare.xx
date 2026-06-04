@@ -1,0 +1,17 @@
+[project]
+name = "magic-square-1004"
+version = "0.0.0"
+description = "MagicSquare_1004 — ECB + Dual-Track TDD harness"
+requires-python = ">=3.10"
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+markers = [
+    "entity: domain / Rule track (fast, no I/O)",
+    "control: orchestration / Command+Skill track",
+    "boundary: adapters / CLI & external I/O track",
+]
