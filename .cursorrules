@@ -1,0 +1,71 @@
+# MagicSquare_xx — Cursor Rules (초안)
+
+## 프로젝트
+
+4×4 **부분 마방진** 검증·풀이 CLI/모듈. ECB + Dual-Track TDD. 상세: `docs/PRD.md`, `Report/`.
+
+---
+
+## 도메인 (Rule)
+
+- 격자: **4×4**, 값 `0`(빈칸) 또는 **1~16** (각 숫자 최대 1회).
+- 빈칸 **`0`은 정확히 2개**.
+- 마방진 상수(Magic constant): **34** — `MagicConstant` SSOT만 사용 (아래 TDD 참고).
+- 검증 대상: 행 4 + 열 4 + 주·부대각선 2 = **10조건**.
+- 성공 출력: **`int[6]`** = `[r1, c1, n1, r2, c2, n2]` — 채울 두 칸과 숫자, **좌표 1-index** (행·열 1~4).
+- 오류 코드 **E001~E007**: **boundary** 전담 (입력·I/O·CLI·포맷).
+- **entity**는 **E001~E005 처리 금지** — 순수 도메인만; boundary가 코드를 매핑한다.
+
+---
+
+## 아키텍처 (ECB)
+
+- 의존 방향: **boundary → control → entity** (단방향).
+- **entity → \*** import **금지** (stdlib 제외한 상위·형제 계층 참조 금지).
+- **boundary**: CLI, stdin/파일, E001~E007 발생·반환.
+- **control**: 유스케이스 조율, entity 호출, 결과 조립.
+- **entity**: 격자 규칙, 합 34 검증, 솔루션/검증 순수 로직.
+
+```
+boundary ──► control ──► entity
+```
+
+---
+
+## Dual-Track 테스트
+
+| Track | 계층 | ID 접두 | 파일명 | Mock |
+|-------|------|---------|--------|------|
+| Logic | entity, control | `D-*` | `test_d_*.py` | **Domain Mock 금지** |
+| UI | boundary | `U-*` | `test_u_*.py` | **Mock 허용** |
+
+- pytest markers: `@pytest.mark.entity` / `control` / `boundary` — Track과 일치시킬 것.
+- `tests/entity`, `tests/control`, `tests/boundary` 디렉터리 유지.
+
+---
+
+## TDD
+
+- 사이클: **RED → GREEN → REFACTOR** (순서 생략·역행 금지).
+- **assert 완화·`skip`·`xfail` 금지** — 실패는 구현으로 해결.
+- **MagicConstant SSOT**: `34`, `16`, 격자 크기 `4` 등 도메인 상수는 **한 곳**에서만 정의; 테스트·구현에 리터럴 산재 금지.
+- 테스트 추가 시 **Phase / Layer / Track**을 응답·커밋 메시지에 명시.
+
+---
+
+## AI 행동
+
+- 사용자 대화·설명: **한국어**.
+- 코드·식별자·주석: 프로젝트 기존 영문 관례 유지.
+- TDD 작업 시작 시 한 줄 선언 예:
+  `Phase=RED | Layer=entity | Track=Logic(D-*)`
+- **git commit / push**: 사용자가 **명시 요청할 때만**.
+- 범위: PRD Out of Scope(자동 풀이, n×n, GUI 등) 확장 제안·구현 금지.
+- 변경은 **최소 diff**; 요청 없는 파일·리팩터 금지.
+
+---
+
+## 레이아웃
+
+- `src/{entity,control,boundary}/`, `tests/{entity,control,boundary}/`
+- 설정: `pyproject.toml` (pytest)
